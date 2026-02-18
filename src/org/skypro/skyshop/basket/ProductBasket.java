@@ -16,7 +16,7 @@ public class ProductBasket {
     }
 
 
-    public int TotalPrice() {
+    public int totalPrice() {
         int sum = 0;
         for (Product product : products) {
             if (product != null) {
@@ -40,7 +40,7 @@ public class ProductBasket {
         if (isEmpty) {
             System.out.println("В корзине пусто");
         } else {
-            System.out.println("Итого: " + TotalPrice());
+            System.out.println("Итого: " + totalPrice());
         }
     }
 

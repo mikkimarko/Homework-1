@@ -27,7 +27,7 @@ public class App {
 
         basket.printBasket();
 
-        System.out.println("Общая стоимость: " + basket.TotalPrice());
+        System.out.println("Общая стоимость: " + basket.totalPrice());
 
         System.out.println("Есть ли Хлеб? " + basket.containsProduct("Хлеб"));
 
@@ -37,7 +37,7 @@ public class App {
 
         basket.printBasket();
 
-        System.out.println("Стоимость пустой корзины: " + basket.TotalPrice());
+        System.out.println("Стоимость пустой корзины: " + basket.totalPrice());
 
         System.out.println("Есть ли Хлеб в пустой корзине? "
                 + basket.containsProduct("Хлеб"));
