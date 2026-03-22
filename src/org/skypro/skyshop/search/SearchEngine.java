@@ -37,4 +37,42 @@ public class SearchEngine {
 
         return result;
     }
+
+    public Searchable findBestMatch(String search) throws BestResultNotFound {
+        Searchable best = null;
+        int maxCount = 0;
+
+        for (Searchable item : items) {
+            if (item == null) continue;
+
+            String term = item.getSearchTerm();
+            int count = countOccurrences(term, search);
+
+            if (count > maxCount) {
+                maxCount = count;
+                best = item;
+            }
+        }
+
+        if (best == null) {
+            throw new BestResultNotFound("Ничего не найдено для: " + search);
+        }
+
+        return best;
+    }
+
+    private int countOccurrences(String str, String sub) {
+        int count = 0;
+        int index = 0;
+
+        while (true) {
+            int found = str.indexOf(sub, index);
+            if (found == -1) break;
+
+            count++;
+            index = found + sub.length();
+        }
+
+        return count;
+    }
 }
