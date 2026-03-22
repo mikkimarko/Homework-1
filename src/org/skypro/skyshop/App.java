@@ -6,11 +6,37 @@ import org.skypro.skyshop.product.DiscountedProduct;
 import org.skypro.skyshop.product.FixPriceProduct;
 import org.skypro.skyshop.product.Product;
 import org.skypro.skyshop.product.SimpleProduct;
+import org.skypro.skyshop.search.BestResultNotFound;
 import org.skypro.skyshop.search.SearchEngine;
 import org.skypro.skyshop.search.Searchable;
 
 public class App {
     public static void main(String[] args) {
+
+        try {
+            Product wrong = new SimpleProduct("", -10);
+        } catch (IllegalArgumentException e) {
+            System.out.println( e.getMessage());
+        }
+
+        try {
+            Product wrongProduct2 = new SimpleProduct("Хлеб", 0);
+        } catch (IllegalArgumentException e) {
+            System.out.println(e.getMessage());
+        }
+
+        try {
+            Product wrongProduct3 = new DiscountedProduct("Молоко", -10, 20);
+        } catch (IllegalArgumentException e) {
+            System.out.println(e.getMessage());
+        }
+
+        try {
+            Product wrongProduct4 = new DiscountedProduct("Чай", 100, 150);
+        } catch (IllegalArgumentException e) {
+            System.out.println(e.getMessage());
+        }
+
 
         Product bread = new SimpleProduct("Хлеб", 50);
         Product milk = new DiscountedProduct("Молоко", 80, 20);
@@ -39,6 +65,20 @@ public class App {
         searchEngine.add(article1);
         searchEngine.add(article2);
 
+
+        try {
+            Searchable best = searchEngine.findBestMatch("чай");
+            System.out.println("Лучший результат: " + best.getStringRepresentation());
+        } catch (BestResultNotFound e) {
+            System.out.println(e.getMessage());
+        }
+
+        try {
+            Searchable best = searchEngine.findBestMatch("телевизор");
+            System.out.println(best.getStringRepresentation());
+        } catch (BestResultNotFound e) {
+            System.out.println("Ошибка поиска: " + e.getMessage());
+        }
 
         System.out.println("\nПоиск: чай");
         printSearchResults(searchEngine.search("Чай"));
