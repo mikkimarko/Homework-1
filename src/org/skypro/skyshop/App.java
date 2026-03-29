@@ -10,13 +10,16 @@ import org.skypro.skyshop.search.BestResultNotFound;
 import org.skypro.skyshop.search.SearchEngine;
 import org.skypro.skyshop.search.Searchable;
 
+import java.util.List;
+
 public class App {
+
     public static void main(String[] args) {
 
         try {
             Product wrong = new SimpleProduct("", -10);
         } catch (IllegalArgumentException e) {
-            System.out.println( e.getMessage());
+            System.out.println(e.getMessage());
         }
 
         try {
@@ -37,7 +40,6 @@ public class App {
             System.out.println(e.getMessage());
         }
 
-
         Product bread = new SimpleProduct("Хлеб", 50);
         Product milk = new DiscountedProduct("Молоко", 80, 20);
         Product cheese = new FixPriceProduct("Сыр");
@@ -50,9 +52,31 @@ public class App {
         basket.addProduct(cheese);
         basket.addProduct(tea);
 
+        System.out.println("Содержимое корзины:");
         basket.printBasket();
 
-        SearchEngine searchEngine = new SearchEngine(10);
+        System.out.println("\nУдаляем продукт: Хлеб");
+
+        List<Product> removedProducts = basket.removeByName("Хлеб");
+
+        for (Product product : removedProducts) {
+            System.out.println("Удален: " + product);
+        }
+
+        System.out.println("\nКорзина после удаления:");
+        basket.printBasket();
+
+        System.out.println("\nУдаляем продукт: Телевизор");
+
+        List<Product> removedProducts2 = basket.removeByName("Телевизор");
+
+        if (removedProducts2.isEmpty()) {
+            System.out.println("Список пуст");
+        }
+
+        basket.printBasket();
+
+        SearchEngine searchEngine = new SearchEngine();
 
         searchEngine.add(bread);
         searchEngine.add(milk);
@@ -65,10 +89,9 @@ public class App {
         searchEngine.add(article1);
         searchEngine.add(article2);
 
-
         try {
             Searchable best = searchEngine.findBestMatch("чай");
-            System.out.println("Лучший результат: " + best.getStringRepresentation());
+            System.out.println("\nЛучший результат: " + best.getStringRepresentation());
         } catch (BestResultNotFound e) {
             System.out.println(e.getMessage());
         }
@@ -81,20 +104,24 @@ public class App {
         }
 
         System.out.println("\nПоиск: чай");
-        printSearchResults(searchEngine.search("Чай"));
+        printSearchResults(searchEngine.search("чай"));
 
         System.out.println("\nПоиск: молоко");
-        printSearchResults(searchEngine.search("Молоко"));
+        printSearchResults(searchEngine.search("молоко"));
 
         System.out.println("\nПоиск: сыр");
-        printSearchResults(searchEngine.search("Сыр"));
+        printSearchResults(searchEngine.search("сыр"));
     }
 
-    private static void printSearchResults(Searchable[] results) {
+    private static void printSearchResults(List<Searchable> results) {
+
+        if (results.isEmpty()) {
+            System.out.println("Ничего не найдено");
+            return;
+        }
+
         for (Searchable item : results) {
-            if (item != null) {
-                System.out.println(item.getStringRepresentation());
-            }
+            System.out.println(item.getStringRepresentation());
         }
     }
 }
