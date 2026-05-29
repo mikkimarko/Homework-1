@@ -12,6 +12,7 @@ import org.skypro.skyshop.search.Searchable;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public class App {
 
@@ -114,14 +115,9 @@ public class App {
         printSearchResults(searchEngine.search("сыр"));
     }
 
-    private static void printSearchResults(Map<String, Searchable> results) {
+    public static void printSearchResults(Set<Searchable> results) {
 
-        if (results.isEmpty()) {
-            System.out.println("Ничего не найдено");
-            return;
-        }
-
-        for (Searchable item : results.values()) {
+        for (Searchable item : results) {
             System.out.println(item.getStringRepresentation());
         }
     }
