@@ -1,6 +1,7 @@
 package org.skypro.skyshop.search;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class SearchEngine {
 
@@ -12,15 +13,13 @@ public class SearchEngine {
 
     public Set<Searchable> search(String query) {
 
-        Set<Searchable> result = new TreeSet<>(new SearchComparator());
-
-        for (Searchable item : items) {
-            if (item.getSearchTerm().toLowerCase().contains(query.toLowerCase())) {
-                result.add(item);
-            }
-        }
-
-        return result;
+        return items.stream()
+                .filter(item -> item.getSearchTerm()
+                        .toLowerCase()
+                        .contains(query.toLowerCase()))
+                .collect(Collectors.toCollection(
+                        () -> new TreeSet<>(new SearchComparator())
+                ));
     }
 
 

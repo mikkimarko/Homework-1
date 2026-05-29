@@ -15,38 +15,32 @@ public class ProductBasket {
     }
 
     public int totalPrice() {
-        int sum = 0;
-
-        for (List<Product> productList : products.values()) {
-            for (Product product : productList) {
-                sum += product.getPrice();
-            }
-        }
-
-        return sum;
+        return products.values().stream()
+                .flatMap(List::stream)
+                .mapToInt(Product::getPrice)
+                .sum();
     }
 
     public void printBasket() {
-        boolean isEmpty = true;
-        int specialCount = 0;
 
-        for (List<Product> productList : products.values()) {
-            for (Product product : productList) {
-                System.out.println(product);
-                isEmpty = false;
-
-                if (product.isSpecial()) {
-                    specialCount++;
-                }
-            }
-        }
-
-        if (isEmpty) {
+        if (products.isEmpty()) {
             System.out.println("В корзине пусто");
         } else {
+
+            products.values().stream()
+                    .flatMap(List::stream)
+                    .forEach(System.out::println);
+
             System.out.println("Итого: " + totalPrice());
-            System.out.println("Специальных товаров: " + specialCount);
+            System.out.println("Специальных товаров: " + getSpecialCount());
         }
+    }
+
+    private long getSpecialCount() {
+        return products.values().stream()
+                .flatMap(List::stream)
+                .filter(Product::isSpecial)
+                .count();
     }
 
     public boolean containsProduct(String name) {
